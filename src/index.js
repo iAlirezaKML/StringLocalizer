@@ -1,9 +1,9 @@
-import fs from 'fs'
+import fs from 'fs-extra'
 import _ from 'lodash'
 
 const inputSourceJSONPath = __dirname + '/../input/newSource.json'
 
-const outputLocalizedStringsPath = lang => __dirname + `/../output/localized.${lang}.strings`
+const outputLocalizedStringsPath = lang => __dirname + `/../output/${lang}.lproj/Localizable.strings`
 const outputSwiftPath = __dirname + '/../output/LocalizedStrings.swift'
 
 // interface StringVariable {
@@ -101,7 +101,7 @@ function extractFromSourceJSON() {
 }
 
 function saveToFile(path, content, msg) {
-	fs.writeFile(path, content, err => {
+	return fs.outputFile(path, content, err => {
 		// throws an error, you could also catch it here
 		if (err) throw err
 		// success case, the file was saved

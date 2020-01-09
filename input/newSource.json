@@ -1,0 +1,55 @@
+[
+	{
+		"key": "ok",
+		"values": {
+			"en": "OK",
+			"ar": "أوکی"
+		}
+	},
+	{
+		"key": "cancel",
+		"values": {
+			"en": "Cancel",
+			"ar": "لغو"
+		}
+	},
+	{
+		"key": "record",
+		"values": {
+			"en": "Record",
+			"ar": "سجل"
+		}
+	},
+	{
+		"key": "authorization_msg",
+		"comment": "message for authorization",
+		"variables": [
+			{
+				"name": "amount",
+				"type": "Double"
+			},
+			{
+				"name": "recipient",
+				"type": "String?"
+			}
+		],
+		"values": {
+			"en": "I authorize the payment of %@ to %@.",
+			"ar": "أذن بدفع ٪@ إلى ٪@."
+		}
+	},
+	{
+		"key": "options",
+		"type": "array",
+		"values": {
+			"en": [
+				"Select",
+				"Ignore"
+			],
+			"ar": [
+				"تحديد",
+				"تجاهل"
+			]
+		}
+	}
+]

@@ -13,7 +13,7 @@ const outputSwiftPath = __dirname + '/../output/LocalizedStrings.swift'
 
 // interface StringItem {
 // 	key: String;
-// 	type?: 'single' | 'array';
+// 	type?: 'single' | 'attributed' | 'array';
 // 	comment?: String;
 // 	variables?: StringVariable[];
 // 	values: Object;
@@ -28,7 +28,7 @@ function toLocalizedString({ key, type = 'single', comment, values }, lang) {
 		return ''
 	}
 	let value = ''
-	if (type === 'single') {
+	if (type === 'single' || type === 'attributed') {
 		value = escape(values[lang])
 	} else if (type === 'array') {
 		value = values[lang].reduce((acc, el) => `${acc}<item>${escape(el)}</item>`, '')
@@ -59,6 +59,16 @@ function toSwiftCode({ key, type = 'signle', comment = '', variables }) {
 				comment: "${escape(comment)}"
 			)${vars}
 		)
+	}`
+	} else if (type === 'attributed') {
+		result = `\
+	static func ${name}(${args}) -> NSAttributedString? {
+		return try? ZSWTaggedString(
+			format: NSLocalizedString(
+				"${escape(key)}",
+				comment: "${escape(comment)}"
+			)${vars}
+		).attributedString()
 	}`
 	} else if (type === 'array') {
 		result = `\
@@ -95,7 +105,7 @@ function extractFromSourceJSON() {
 		})
 
 		const keyCodes = sourceJSON.map(toSwiftCode).reduce((acc, el) => `${acc}${el}\n\n`, '')
-		const swiftCode = `enum LocalizedStrings {\n${keyCodes}}`
+		const swiftCode = `import Foundation\nimport ZSWTaggedStringSwift\n\nenum LocalizedStrings {\n${keyCodes}}`
 		saveToFile(outputSwiftPath, swiftCode, 'swift')
 	})
 }
